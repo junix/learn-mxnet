@@ -49,7 +49,7 @@ def square_loss(yhat, y):
 
 
 def train():
-    epochs = 5
+    epochs = 10
     learning_rate = .001
     for e in range(epochs):
         total_loss = 0
