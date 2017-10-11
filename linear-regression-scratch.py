@@ -48,25 +48,32 @@ def square_loss(yhat, y):
     return (yhat - y.reshape(yhat.shape)) ** 2
 
 
+learning_rate = .001
+
+
+def step(epoch):
+    total_loss = 0
+    for data, label in data_iter():
+        with autograd.record():
+            output = net(data)
+            loss = square_loss(output, label)
+        loss.backward()
+        SGD(params, learning_rate)
+        total_loss += nd.sum(loss).asscalar()
+    print("Epoch %d, average loss: %f" % (epoch, total_loss / num_examples))
+
+
 def train():
     epochs = 10
-    learning_rate = .001
     for e in range(epochs):
-        total_loss = 0
-        for data, label in data_iter():
-            with autograd.record():
-                output = net(data)
-                loss = square_loss(output, label)
-            loss.backward()
-            SGD(params, learning_rate)
-
-            total_loss += nd.sum(loss).asscalar()
-        print("Epoch %d, average loss: %f" % (e, total_loss / num_examples))
+        step(e)
 
 
-def main():
-    pass
+def print_result():
+    print('w={},true_w={}'.format(w.reshape((1, 2))[0].asnumpy(), true_w))
+    print('b={},true_b={}'.format(b.asscalar(), true_b))
 
 
 if __name__ == '__main__':
     train()
+    print_result()
