@@ -17,11 +17,12 @@ batch_size = 10
 
 def data_iter():
     # 产生一个随机索引
-    idx = list(range(num_examples))
-    random.shuffle(idx)
-    for i in range(0, num_examples, batch_size):
-        j = nd.array(idx[i:min(i + batch_size, num_examples)])
-        yield nd.take(X, j), nd.take(y, j)
+    indexes = list(range(num_examples))
+    random.shuffle(indexes)
+    for beg in range(0, num_examples, batch_size):
+        end = min(beg + batch_size, num_examples)
+        seg = nd.array(indexes[beg:end])
+        yield nd.take(X, seg), nd.take(y, seg)
 
 
 w = nd.random_normal(shape=(num_inputs, 1))
@@ -33,12 +34,13 @@ for param in params:
 
 
 def net(X):
+    # batch_size x num . num x 1 => batch_size x 1
     return nd.dot(X, w) + b
 
 
 def SGD(params, lr):
-    for param in params:
-        param[:] = param - lr * param.grad
+    for p in params:
+        p[:] = p - lr * p.grad
 
 
 def square_loss(yhat, y):
@@ -69,4 +71,3 @@ def main():
 if __name__ == '__main__':
     print(w)
     train()
-
