@@ -38,9 +38,9 @@ def net(X):
     return nd.dot(X, w) + b
 
 
-def SGD(params, lr):
+def SGD(params, learning_rate):
     for p in params:
-        p[:] = p - lr * p.grad
+        p[:] = p - learning_rate * p.grad
 
 
 def square_loss(yhat, y):
@@ -69,5 +69,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print(w)
     train()
