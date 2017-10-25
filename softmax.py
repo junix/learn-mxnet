@@ -8,7 +8,11 @@ def softmax(xs):
         yield x / sm
 
 
-if __name__ == '__main__':
+def test():
     cs = range(10)
     for a, b in zip(cs, softmax(cs)):
         print('{} -> {}'.format(a, b))
+
+
+if __name__ == '__main__':
+    test()
