@@ -1,8 +1,7 @@
-from mxnet import ndarray as nd
 from mxnet import autograd
-from math import fabs
+from mxnet import ndarray as nd
 
-x = nd.array((4,))
+x = nd.array((-40,))
 x.attach_grad()
 
 
@@ -17,6 +16,7 @@ def min_x7():
         b = nd.dot(a, x) + 7
         diff = b ** 2
     diff.backward()
+    print(x.grad)
     SGD()
 
 
