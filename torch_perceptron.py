@@ -7,8 +7,9 @@ import torch.optim as optim
 
 a = Variable(t.rand(2), requires_grad=True)
 b = Variable(t.rand(1), requires_grad=True)
+sgd = optim.SGD(params=[a, b], lr=-0.01)
 
-D = [
+Data = [
     ((-1.0, -2.1), -1.0),
     ((.0, 0.9), 1.0),
     ((1., 0.1), 1.0),
@@ -17,50 +18,51 @@ D = [
 
 
 def filter_error():
-    a0, b0 = a.data, b.data
-    for x, y in D:
-        x = t.Tensor(x)
-        r = y * (a0.dot(x) + b0)
-        if r[0] < 0.0:
+    for x, y in Data:
+        r = loss(x, y)
+        if r.data[0] < 0.0:
             yield x, y
 
 
-def net(x, y, c):
-    return - c * (a * x + b)
-
-
-def net1(xs):
-    return sum([net(x, y, c) for x, y, c in xs])
-
-
 def select_one(xs):
+    xs = list(xs)
     random.shuffle(xs)
     return xs[0] if xs else None
 
 
-if __name__ == '__main__':
-    opt = optim.SGD(params=[a, b], lr=0.1)
+def loss(x, y):
+    x = Variable(t.FloatTensor(x))
+    return y * (a.dot(x) + b)
 
-    print('orig:{} : {}'.format(a.data[0], b.data[0]))
-    for epoch in range(100000):
-        opt.zero_grad()
-        es = list(filter_error())
-        random.shuffle(es)
 
-        if es:
-            # l = net1(es)
-            # l.backward()
-            # print("a={},b={},{}, a_grad={},b_grad={}".format(
-            #     a.data[0], b.data[0], es, a.grad.data[0], b.grad.data[0]))
-            x, y = es[0]
-            a.data.add_(0.01 * x * y)
-            b.data.add_(0.01 * y)
-        else:
-            print('new:{} : {}'.format(a.data, b.data))
-            a0, b0 = a.data, b.data
-            for x, y in D:
-                x = t.Tensor(x)
-                r = y*(a0.dot(x) + b0)
-                print(r[0])
-            # print(list(filter_error()))
+def loss_batch(xs):
+    return sum([loss(x, y) for x, y in xs])
+
+
+def train():
+    show_params()
+    for epoch in range(10000):
+        e = select_one(filter_error())
+        if e is None:
             break
+        x, y = e
+        sgd.zero_grad()
+        l = loss(x, y)
+        l.backward()
+        sgd.step()
+    show_params()
+
+
+def show_test():
+    for x, y in Data:
+        r = loss(x, y)
+        print(r.data[0])
+
+
+def show_params():
+    print('new:w0,w1,b={}'.format(t.FloatTensor([a.data[0], a.data[1], b.data[0]])))
+
+
+if __name__ == '__main__':
+    train()
+    show_test()
