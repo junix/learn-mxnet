@@ -13,8 +13,9 @@ def net(x):
 
 y0 = net(X)
 y1 = net(Y)
-y0.backward()
+# y0.backward()
 # a.grad.data.zero_()
 y1.backward()
 
 print(a.grad)
+print(Y.grad)
