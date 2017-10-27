@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import torch as t
+import pytorch as t
 import random
-from torch.autograd import Variable
-import torch.optim as optim
+from pytorch.autograd import Variable
+import pytorch.optim as optim
 
 a = Variable(t.rand(2), requires_grad=True)
 b = Variable(t.rand(1), requires_grad=True)

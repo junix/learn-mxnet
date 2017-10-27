@@ -1,9 +1,9 @@
-import torch
-import torch.optim as optim
-from torch.autograd import Variable
+import pytorch
+import pytorch.optim as optim
+from pytorch.autograd import Variable
 
-a = Variable(torch.FloatTensor([1.]))
-b = Variable(torch.FloatTensor([7.]))
+a = Variable(pytorch.FloatTensor([1.]))
+b = Variable(pytorch.FloatTensor([7.]))
 
 
 def net(x):
@@ -12,7 +12,7 @@ def net(x):
 
 
 if __name__ == '__main__':
-    x0 = Variable(torch.FloatTensor([-1.]), requires_grad=True)
+    x0 = Variable(pytorch.FloatTensor([-1.]), requires_grad=True)
     y = 0
 
     optimizer = optim.SGD([x0], lr=0.01)
