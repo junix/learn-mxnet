@@ -2,7 +2,7 @@ import torch
 from torch.autograd import Variable
 import torch.optim as optim
 
-# deep learning 4.5 example
+# <<deep learning>> 4.5 example
 
 a = torch.FloatTensor((1.0, 2.0, 3.0))
 b = torch.FloatTensor((60,))
