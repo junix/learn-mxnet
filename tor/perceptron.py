@@ -51,16 +51,16 @@ def loss(a, b, x, y):
 
 def train(model):
     model.show_params()
-    sgd = optim.SGD(params=model.parameters(), lr=-0.01)
+    optimizer = optim.SGD(params=model.parameters(), lr=-0.01)
     for epoch in range(10000):
         e = select_one(filter_error(model))
         if e is None:
             break
         x, y = e
-        sgd.zero_grad()
+        optimizer.zero_grad()
         l = loss(model.a, model.b, x, y)
         l.backward()
-        sgd.step()
+        optimizer.step()
     model.show_params()
 
 
