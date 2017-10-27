@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-import tor as t
+import torch as t
 import random
-from tor.autograd import Variable
-import tor.optim as optim
+from torch.autograd import Variable
+import torch.optim as optim
 
 a = Variable(t.rand(2), requires_grad=True)
 b = Variable(t.rand(1), requires_grad=True)
-sgd = optim.SGD(params=[a, b], lr=-0.01)
 
 Data = [
     ((-1.0, -2.1), -1.0),
@@ -17,10 +16,25 @@ Data = [
 ]
 
 
-def filter_error():
+class Model:
+    def __init__(self):
+        self.a = Variable(t.rand(2), requires_grad=True)
+        self.b = Variable(t.rand(1), requires_grad=True)
+
+    def parameters(self):
+        return (self.a, self.b)
+
+    def input(self, x):
+        return self.a.data.dot(x) + self.b.data
+
+    def show_params(self):
+        print('new:w0,w1,b={}'.format(t.FloatTensor([self.a.data[0], self.a.data[1], self.b.data[0]])))
+
+
+def filter_error(model):
     for x, y in Data:
-        r = loss(x, y)
-        if r.data[0] < 0.0:
+        r = y * model.input(t.Tensor(x))
+        if r[0] < 0.0:
             yield x, y
 
 
@@ -30,39 +44,33 @@ def select_one(xs):
     return xs[0] if xs else None
 
 
-def loss(x, y):
+def loss(a, b, x, y):
     x = Variable(t.FloatTensor(x))
     return y * (a.dot(x) + b)
 
 
-def loss_batch(xs):
-    return sum([loss(x, y) for x, y in xs])
-
-
-def train():
-    show_params()
+def train(model):
+    model.show_params()
+    sgd = optim.SGD(params=model.parameters(), lr=-0.01)
     for epoch in range(10000):
-        e = select_one(filter_error())
+        e = select_one(filter_error(model))
         if e is None:
             break
         x, y = e
         sgd.zero_grad()
-        l = loss(x, y)
+        l = loss(model.a, model.b, x, y)
         l.backward()
         sgd.step()
-    show_params()
+    model.show_params()
 
 
-def show_test():
+def show_test(model):
     for x, y in Data:
-        r = loss(x, y)
+        r = loss(model.a, model.b, t.Tensor(x), y)
         print(r.data[0])
 
 
-def show_params():
-    print('new:w0,w1,b={}'.format(t.FloatTensor([a.data[0], a.data[1], b.data[0]])))
-
-
 if __name__ == '__main__':
-    train()
-    show_test()
+    model = Model()
+    train(model)
+    show_test(model)
