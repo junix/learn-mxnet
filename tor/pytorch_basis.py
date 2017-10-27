@@ -1,11 +1,11 @@
-import pytorch
+import tor
 import torchvision
-import pytorch.nn as nn
+import tor.nn as nn
 import numpy as np
-import pytorch.utils.data as data
+import tor.utils.data as data
 import torchvision.transforms as transforms
 import torchvision.datasets as dsets
-from pytorch.autograd import Variable
+from tor.autograd import Variable
 
 # ========================== Table of Contents ==========================#
 # 1. Basic autograd example 1               (Line 21 to 36)
@@ -20,9 +20,9 @@ from pytorch.autograd import Variable
 
 # ======================= Basic autograd example 1 =======================#
 # Create tensors.
-x = Variable(pytorch.Tensor([1]), requires_grad=True)
-w = Variable(pytorch.Tensor([2]), requires_grad=True)
-b = Variable(pytorch.Tensor([3]), requires_grad=True)
+x = Variable(tor.Tensor([1]), requires_grad=True)
+w = Variable(tor.Tensor([2]), requires_grad=True)
+b = Variable(tor.Tensor([3]), requires_grad=True)
 
 # Build a computational graph.
 y = w * x + b  # y = 2 * x + 3
@@ -37,8 +37,8 @@ print(b.grad)  # b.grad = 1
 
 # ======================== Basic autograd example 2 =======================#
 # Create tensors.
-x = Variable(pytorch.randn(5, 3))
-y = Variable(pytorch.randn(5, 2))
+x = Variable(tor.randn(5, 3))
+y = Variable(tor.randn(5, 2))
 
 # Build a linear layer.
 linear = nn.Linear(3, 2)
@@ -47,7 +47,7 @@ print('b: ', linear.bias)
 
 # Build Loss and Optimizer.
 criterion = nn.MSELoss()
-optimizer = pytorch.optim.SGD(linear.parameters(), lr=0.01)
+optimizer = tor.optim.SGD(linear.parameters(), lr=0.01)
 
 # Forward propagation.
 pred = linear(x)
@@ -77,8 +77,8 @@ print('loss after 1 step optimization: ', loss.data[0])
 
 # ======================== Loading data from numpy ========================#
 a = np.array([[1, 2], [3, 4]])
-b = pytorch.from_numpy(a)  # convert numpy array to pytorch tensor
-c = b.numpy()  # convert pytorch tensor to numpy array
+b = tor.from_numpy(a)  # convert numpy array to tor tensor
+c = b.numpy()  # convert tor tensor to numpy array
 
 # ===================== Implementing the input pipline =====================#
 # Download and construct dataset.
@@ -93,10 +93,10 @@ print(image.size())
 print(label)
 
 # Data Loader (this provides queue and thread in a very simple way).
-train_loader = pytorch.utils.data.DataLoader(dataset=train_dataset,
-                                             batch_size=100,
-                                             shuffle=True,
-                                             num_workers=2)
+train_loader = tor.utils.data.DataLoader(dataset=train_dataset,
+                                         batch_size=100,
+                                         shuffle=True,
+                                         num_workers=2)
 
 # When iteration starts, queue and thread start to load dataset from files.
 data_iter = iter(train_loader)
@@ -129,14 +129,14 @@ class CustomDataset(data.Dataset):
         # You should change 0 to the total size of your dataset.
         return 0
 
-    # Then, you can just use prebuilt pytorch's data loader.
+    # Then, you can just use prebuilt tor's data loader.
 
 
 custom_dataset = CustomDataset()
-train_loader = pytorch.utils.data.DataLoader(dataset=custom_dataset,
-                                             batch_size=100,
-                                             shuffle=True,
-                                             num_workers=2)
+train_loader = tor.utils.data.DataLoader(dataset=custom_dataset,
+                                         batch_size=100,
+                                         shuffle=True,
+                                         num_workers=2)
 
 # ========================== Using pretrained model ==========================#
 # Download and load pretrained resnet.
@@ -150,15 +150,15 @@ for param in resnet.parameters():
 resnet.fc = nn.Linear(resnet.fc.in_features, 100)  # 100 is for example.
 
 # For test.
-images = Variable(pytorch.randn(10, 3, 256, 256))
+images = Variable(tor.randn(10, 3, 256, 256))
 outputs = resnet(images)
 print(outputs.size())  # (10, 100)
 
 # ============================ Save and load the model ============================#
 # Save and load the entire model.
-pytorch.save(resnet, 'model.pkl')
-model = pytorch.load('model.pkl')
+tor.save(resnet, 'model.pkl')
+model = tor.load('model.pkl')
 
 # Save and load only the model parameters(recommended).
-pytorch.save(resnet.state_dict(), 'params.pkl')
-resnet.load_state_dict(pytorch.load('params.pkl'))
+tor.save(resnet.state_dict(), 'params.pkl')
+resnet.load_state_dict(tor.load('params.pkl'))

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import pytorch as t
+import tor as t
 import random
-from pytorch.autograd import Variable
-import pytorch.optim as optim
+from tor.autograd import Variable
+import tor.optim as optim
 
 a = Variable(t.rand(2), requires_grad=True)
 b = Variable(t.rand(1), requires_grad=True)

@@ -1,5 +1,5 @@
-from mxnet import ndarray as nd
-from mxnet import autograd
+from mx import ndarray as nd
+from mx import autograd
 import random
 
 num_inputs = 2

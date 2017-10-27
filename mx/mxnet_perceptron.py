@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from mxnet import ndarray as nd
-import mxnet.autograd as ag
+from mx import ndarray as nd
+import mx.autograd as ag
 
 D = [
     (-1, -2.1, -1),

@@ -1,12 +1,12 @@
-import pytorch
-from pytorch.autograd import Variable
-import pytorch.optim as optim
+import tor
+from tor.autograd import Variable
+import tor.optim as optim
 
 # <<deep learning>> 4.5 example
 
-a = pytorch.FloatTensor((1.0, 2.0, 3.0))
-b = pytorch.FloatTensor((60,))
-x = Variable(pytorch.rand(3), requires_grad=True)
+a = tor.FloatTensor((1.0, 2.0, 3.0))
+b = tor.FloatTensor((60,))
+x = Variable(tor.rand(3), requires_grad=True)
 sgd = optim.SGD((x,), lr=0.001)
 
 
