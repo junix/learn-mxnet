@@ -8,9 +8,9 @@ from data.linear_reg import EFFORT_DATA as DATA
 class Model:
     def __init__(self):
         # self.w = Variable(torch.rand(2, 1), requires_grad=True)
-        self.w = Variable(torch.Tensor([[0.2480651], [0.98023671]]), requires_grad=True)
+        self.w = Variable(torch.Tensor([[0.26193029], [0.97255689]]), requires_grad=True)
         # self.b = Variable(torch.rand(1, 1), requires_grad=True)
-        self.b = Variable(torch.Tensor([[-12.88317204]]), requires_grad=True)
+        self.b = Variable(torch.Tensor([[-13.84867859]]), requires_grad=True)
 
     def parameters(self):
         return self.w, self.b
@@ -46,7 +46,7 @@ def train(model):
         optimizer.zero_grad()
         yshat = model.input(xs)
         l = loss(Variable(ys), yshat)
-        if l.data[0] < 34.7:
+        if l.data[0] < 34.715:
             break
         l.backward()
         # print('w.grad={}'.format(model.w.grad.data.numpy()))
