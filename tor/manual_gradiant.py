@@ -6,7 +6,8 @@ x = torch.Tensor([[1], [-2]])
 
 
 def f():
-    return (a.mm(x) - b).norm(p=2)**2
+    return (a.mm(x) - b).norm(p=2) ** 2
+
 
 # grad
 def grad():
