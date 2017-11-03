@@ -1,11 +1,11 @@
-import tor
-import tor.nn as nn
-from tor.autograd import Variable
+import xtorch
+import xtorch.nn as nn
+from xtorch.autograd import Variable
 
 # ======================== Basic autograd example 2 =======================#
 # Create tensors.
-x = Variable(tor.randn(5, 3))
-y = Variable(tor.randn(5, 2))
+x = Variable(xtorch.randn(5, 3))
+y = Variable(xtorch.randn(5, 2))
 
 # Build a linear layer.
 linear = nn.Linear(3, 2)
@@ -14,7 +14,7 @@ print('b: ', linear.bias)
 
 # Build Loss and Optimizer.
 criterion = nn.MSELoss()
-optimizer = tor.optim.SGD(linear.parameters(), lr=0.01)
+optimizer = xtorch.optim.SGD(linear.parameters(), lr=0.01)
 
 # Forward propagation.
 pred = linear(x)

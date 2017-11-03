@@ -1,5 +1,5 @@
-from mx import autograd
-from mx import ndarray as nd
+from xmxnet import autograd
+from xmxnet import ndarray as nd
 
 x = nd.array((3, 4))
 x.attach_grad()
