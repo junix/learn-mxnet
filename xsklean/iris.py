@@ -4,16 +4,17 @@ from sklearn.linear_model import SGDClassifier
 from sklearn import datasets
 from sklearn.linear_model import SGDClassifier
 
+
 # import some data to play with
 
 
 def load():
     file = '/Users/junix/dataset/iris-species/Iris.csv'
     rs = np.recfromcsv(file)
-    cols = ('sepallengthcm', 'sepalwidthcm') #, 'petallengthcm', 'petalwidthcm')
+    cols = ('sepallengthcm', 'sepalwidthcm')  # , 'petallengthcm', 'petalwidthcm')
     cols = [rs[c].reshape(-1, 1) for c in cols]
     X = np.concatenate(cols, axis=1)
-    Y = rs['species'] #.reshape(-1, 1)
+    Y = rs['species']  # .reshape(-1, 1)
     Y[Y == b'Iris-setosa'] = b'1'
     Y[Y == b'Iris-versicolor'] = b'2'
     Y[Y == b'Iris-virginica'] = b'3'
@@ -48,7 +49,7 @@ if __name__ == '__main__':
 
     X, Y = load()
     c = SGDClassifier(alpha=0.0001, max_iter=10000)
-    c.fit(X,Y)
+    c.fit(X, Y)
     Y1 = c.predict(X)
     print((Y1 == Y).sum())
-    print(np.concatenate((Y.reshape(-1,1),Y1.reshape(-1,1)), axis=1))
+    print(np.concatenate((Y.reshape(-1, 1), Y1.reshape(-1, 1)), axis=1))
